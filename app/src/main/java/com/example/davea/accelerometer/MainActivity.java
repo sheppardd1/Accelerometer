@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }//end OnSensorChanged()
 
 
-    //OLD:
+    //OLD Project:
 /*    @Override
     public void onSensorChanged(SensorEvent event) {
         if(on) {
