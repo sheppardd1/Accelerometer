@@ -5,11 +5,15 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.media.MediaCas;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.zip.DeflaterOutputStream;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
@@ -65,11 +69,66 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }//not used yet
 
     @Override
+    public void onSensorChanged(SensorEvent event) {
+
+    }
+
+    @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //not used, but must be included for this to work
     }
 
-    @Override
+
+    private class GetAccelrData extends AsyncTask <SensorEvent, Float, Float> {
+
+
+        @Override
+        protected Float doInBackground(SensorEvent... event) {
+            int i = 0;
+            float x, y, z;
+            float xAv = yAv = zAv = 0;
+
+            while(on) {
+                x = event.values[0];
+                y = event.values[1];
+                z = event.values[2];
+
+                //compute collective/cumulative average instead of accumulating values and later getting average
+                xAv = (xAv * i + x) / (i + 1);
+                yAv = (yAv * i + y) / (i + 1);
+                zAv = (zAv * i + z) / (i + 1);
+
+                TVData.setText("X: " + x + "\n" + "Y: " + y + "\n" + "Z: " + z);
+
+                if (i == 3) {   //averaging 4 values at a time
+                    TVAverage.setText("X: " + xAv + "\n" + "Y: " + yAv + "\n" + "Z: " + zAv);
+                    i = 0;
+                } else i++;
+
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Float... progress){
+
+        }
+
+        @Override
+        protected void onPostExecute(Float result){
+
+        }
+    }
+
+
+/*    @Override
     public void onSensorChanged(final SensorEvent event) {
 
             xAv = yAv = zAv = 0;    //set averages to 0
@@ -83,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         x = event.values[0];
                         y = event.values[1];
                         z = event.values[2];
+
                         //compute collective/cumulative average instead of accumulating values and later getting average
                         xAv = (xAv * i + x) / (i + 1);
                         yAv = (yAv * i + y) / (i + 1);
@@ -149,3 +209,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }*/
 }
+
