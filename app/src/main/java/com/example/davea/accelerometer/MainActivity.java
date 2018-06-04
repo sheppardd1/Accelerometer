@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         x = event.values[0];
                         y = event.values[1];
                         z = event.values[2];
-                        //compute collective average instead of accumulating values and later getting average
+                        //compute collective/cumulative average instead of accumulating values and later getting average
                         xAv = (xAv * i + x) / (i + 1);
                         yAv = (yAv * i + y) / (i + 1);
                         zAv = (zAv * i + z) / (i + 1);
