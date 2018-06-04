@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
+        float float1 = 0;   //placeholders. will come back to this
+        float float2 = 0;
+        new GetAccelrData().execute(event, float1, float2);
     }
 
     @Override
