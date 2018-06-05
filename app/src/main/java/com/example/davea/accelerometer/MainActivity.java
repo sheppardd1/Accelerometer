@@ -150,7 +150,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }*/
 
-
+//will look at this more:
+// https://stackoverflow.com/questions/26260838/how-to-print-accelerometer-values-every-x-seconds-in-android
     @Override
     public void onSensorChanged(final SensorEvent event) {
 
