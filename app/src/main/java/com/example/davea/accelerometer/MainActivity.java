@@ -1,5 +1,6 @@
 package com.example.davea.accelerometer;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.hardware.SensorEvent;
@@ -13,21 +14,31 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
-
+    //UI:
     public Button BtnStart, BtnClear;
     public TextView TVData;
     public TextView TVAverage;
+
+    //variables:
     public float xAv;
     public float yAv;
-    public float zAv;  //accelerometer values with no decimal place
-    public Sensor accelerometer;
-    public SensorManager sensorManager;
-    public boolean on = true;
+    public float zAv;
     public float x, y, z;
     public long lastUpdateTime = 0;
+    public int i = 0;
+    public boolean on = true;
+
+    //sensors:
+    public Sensor accelerometer;
+    public SensorManager sensorManager;
+    public SensorManager RVSensorManager;
+    public Sensor RVSensor;
+
+    //constants:
     final public int INTERVAL = 200;
     final public int NUMBER_OF_POINTS_TO_AVERAGE = 5;
-    public int i = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +68,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void setup() {
+        //set up accelerometer:
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         assert sensorManager != null;   //ensures next line does not return null pointer exception
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        //register sensor listener
         sensorManager.registerListener(this, accelerometer, sensorManager.SENSOR_DELAY_NORMAL);
+
+        //set up rotation vector sensor:
+        RVSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        assert RVSensorManager != null;
+        RVSensor = RVSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        RVSensorManager.registerListener(this, RVSensor, sensorManager.SENSOR_DELAY_NORMAL);
 
         BtnStart = findViewById(R.id.Start);
         BtnClear = findViewById(R.id.Clear);
