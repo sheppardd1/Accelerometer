@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.media.MediaCas;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 
 import java.util.zip.DeflaterOutputStream;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener{
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     public Button BtnStart, BtnClear;
     public TextView TVData, TVAverage;
@@ -49,10 +50,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 TVAverage.setText("");
             }
         });
+
+
     }
 
-    public void setup(){
-        sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
+    public void setup() {
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         //register sensor listener
         sensorManager.registerListener(this, accelerometer, sensorManager.SENSOR_DELAY_NORMAL);
@@ -64,23 +67,41 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
 
-    private double pythagorean(double a, double b){
+    private double pythagorean(double a, double b) {
         return (Math.sqrt((a * a) + (b * b)));
     }//not used yet
 
-    @Override
+ /*   @Override
     public void onSensorChanged(SensorEvent event) {
         float float1 = 0;   //placeholders. will come back to this
         float float2 = 0;
-        new GetAccelrData().execute(event, event, event);   //????
-    }
+        //new GetAccelrData().execute(event, event, event);   //????
+    }*/
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //not used, but must be included for this to work
     }
 
+ /*   public void getAverage() {
+        float x, y, z;
+        x = event.values[0];
+        y = event.values[1];
+        z = event.values[2];
 
+        //compute collective/cumulative average instead of accumulating values and later getting average
+        xAv = (xAv * i + x) / (i + 1);
+        yAv = (yAv * i + y) / (i + 1);
+        zAv = (zAv * i + z) / (i + 1);
+
+        TVData.setText("X: " + x + "\n" + "Y: " + y + "\n" + "Z: " + z);
+    }*/
+
+
+
+//maybe keep using thread, but put handler inside of thread to deal with .setText()
+
+/*
     private class GetAccelrData extends AsyncTask <SensorEvent, Float, Float> {
 
 
@@ -127,10 +148,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         protected void onPostExecute(Float result){
 
         }
-    }
+    }*/
 
 
-/*    @Override
+    @Override
     public void onSensorChanged(final SensorEvent event) {
 
             xAv = yAv = zAv = 0;    //set averages to 0
@@ -150,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         yAv = (yAv * i + y) / (i + 1);
                         zAv = (zAv * i + z) / (i + 1);
 
-                        TVData.setText("X: " + x + "\n" + "Y: " + y + "\n" + "Z: " + z);
+                        TVData.setText("X: " + x + "\n" + "Y: " + y + "\n" + "Z: " + z);//maybe use handler for this???
 
                         if (i == 3) {   //averaging 4 values at a time
                             TVAverage.setText("X: " + xAv + "\n" + "Y: " + yAv + "\n" + "Z: " + zAv);
@@ -172,9 +193,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if(on) getAccelerometerData.start();
 
     }//end OnSensorChanged()
+}
 
 
-    //OLD Project:
+    //OLD Project:*/
 /*    @Override
     public void onSensorChanged(SensorEvent event) {
         if(on) {
@@ -210,5 +232,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         }
     }*/
-}
+
 
